@@ -29,6 +29,8 @@ export class DefaultLayoutComponent implements OnInit {
           this.router.navigate(['/charts']);
         }
       }
+    } else {
+      this.router.navigate(['/login']);
     }
   }
 
