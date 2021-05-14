@@ -1,0 +1,61 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <i class="icon-puzzle"></i> Домашнее задание
+    </div>
+
+    <div class="card-body">
+      <div style="margin-top: 30px; margin-left: 10px">
+        <div class="card" *ngFor="let exercise of homeWork.exercises; let i = index">
+          <div class="card-header">
+            <i class="icon-puzzle"></i> Задача №{{exercise.courseExercise.id}} <span style="color: brown">({{exercise.status}})</span>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <p>{{exercise.courseExercise.description}}</p>
+            </div>
+            <div class="row" *ngIf="exercise.courseExercise.descriptionImg">
+              <p><img [src]="getFileUrl(exercise.courseExercise.descriptionImg.id)"></p>
+            </div>
+            <div class="row" *ngIf="exercise.courseExercise.downloadFiles.length > 0">
+              <p>
+                Прилагаемые файлы:
+                <span *ngFor="let downloadFile of exercise.courseExercise.downloadFiles">
+                  <a [href]="getFileUrl(downloadFile.id)">{{downloadFile.fileName}}</a>
+                </span>
+              </p>
+            </div>
+            <div>
+              <p>Правильный ответ: {{exercise.courseExercise.answer}}</p>
+              <p>Полученный ответ: {{exercise.answer}}</p>
+
+              <div class="form-group" [hidden]="exercise.courseExercise.answerType !== 'PROGRAMMING'">
+                <label class="col-md-3 col-form-label" for="textarea-input">Код программы:</label>
+                <div class="col-md-9">
+                  <textarea [(ngModel)]="exercise.answerDetail" id="textarea-input" name="textarea-input" rows="9" class="form-control" placeholder="var... begin ... end."></textarea>
+                </div>
+              </div>
+
+              <div class="form-group row" [hidden]="exercise.finalized">
+                <div class="col-md-4">
+                  <div class="input-group">
+                    <select id="select1" name="select1" class="form-control" [(ngModel)]="exercise.status">
+                      <option value="SUCCESS">Правильно</option>
+                      <option value="WRONG_ANSWER">Не совпал ответ</option>
+                      <option value="NOT_ATTENTIVE">Невнимательность</option>
+                      <option value="READ_WRONG">Не верно прочитано условие</option>
+                    </select>
+                    <span class="input-group-append">
+                    <button type="button" class="btn btn-success" (click)="finilize(exercise)">Финализировать</button>
+                  </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

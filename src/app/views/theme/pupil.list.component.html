@@ -1,0 +1,55 @@
+<div class="animated fadeIn">
+  <div>
+    <div style="width: 250px;margin: 20px; float: right">
+      <button type="button" class="btn btn-block btn-primary" (click)="isAddPupil = !isAddPupil">Добавить</button>
+    </div>
+  </div>
+  <div style="clear: right"></div>
+
+  <div class="card" [hidden]="!isAddPupil">
+      <div class="card-header">
+        <i class="icon-puzzle"></i> Добавление ученика
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label for="company">Имя и Фамилия</label>
+          <input type="text" class="form-control" id="company" [(ngModel)]="pupil.name">
+        </div>
+        <div class="form-group">
+          <label for="vat">Почта</label>
+          <input type="text" class="form-control" id="vat" [(ngModel)]="pupil.email">
+        </div>
+        <div class="form-group">
+          <label for="street">Пароль</label>
+          <input type="text" class="form-control" id="street" [(ngModel)]="pupil.password">
+        </div>
+        <div class="form-group">
+          <button class="btn btn-sm btn-primary" (click)="addPupil()"><i class="fa fa-dot-circle-o"></i> Добавить</button>
+        </div>
+      </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <i class="icon-puzzle"></i> Список учеников
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Имя</th>
+          <th>email</th>
+          <th style="text-align: center">Действие</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let pupil of pupils">
+          <td>{{pupil.name}}</td>
+          <td>{{pupil.email}}</td>
+          <td> <button type="button" class="btn btn-block btn-link active" aria-pressed="true" [routerLink]="['/theme/pupil/detail', pupil.id]">Подробнее</button></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

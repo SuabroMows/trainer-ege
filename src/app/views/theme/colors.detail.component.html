@@ -1,0 +1,104 @@
+<div class="animated fadeIn">
+  <div>
+    <div style="width: 250px;margin: 20px; float: right">
+      <button type="button" class="btn btn-block btn-primary" (click)="isAddExercise = !isAddExercise">Добавить новую задачу</button>
+    </div>
+  </div>
+  <div style="clear: right"></div>
+  <div class="card" [hidden]="!isAddExercise">
+    <div class="card-header">
+      <i class="icon-puzzle"></i> Добавление
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="card-body">
+          <form class="form-horizontal">
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="textarea-input">Описание задачи</label>
+              <div class="col-md-9">
+                <textarea [(ngModel)]="description" id="textarea-input" name="textarea-input" rows="6" class="form-control" placeholder="Описание.."></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label">Фото задачи</label>
+              <div class="col-md-9">
+                <ngx-file-drop (onFileDrop)="droppedDescript($event)">
+                  <ng-template ngx-file-drop-content-tmp>
+                    Перетащите файл
+                  </ng-template>
+                </ngx-file-drop>
+                <div *ngFor="let item of filesDescript; let i=index">
+                  <div><strong>{{ item.name }}&nbsp;<i class="icon-close remove-file-icon" (click)="filesDescriptRemove(i)"></i></strong></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label">Файлы к задачи</label>
+              <div class="col-md-9">
+                <ngx-file-drop (onFileDrop)="droppedAttach($event)" >
+                  <ng-template ngx-file-drop-content-tmp>
+                    Перетащите файл
+                  </ng-template>
+                </ngx-file-drop>
+                <div *ngFor="let item of filesDownload; let i=index">
+                  <div><strong>{{ item.name }}&nbsp;<i class="icon-close remove-file-icon" (click)="filesAttachRemove(i)"></i></strong></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="select3">Тип ответа</label>
+              <div class="col-md-9">
+                <select id="select3" name="select3" class="form-control form-control-sm" [(ngModel)]="answerType">
+                  <option *ngFor="let duration of durations" [value]="duration.value">{{duration.title}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="text-input">Правильный ответ</label>
+              <div class="col-md-9">
+                <input type="text" [(ngModel)]="answer" id="text-input" name="text-input" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group" style="text-align: center">
+              <button type="button" class="btn btn-primary" (click)="addExercise()">Добавить пример</button>
+              <button type="button" class="btn btn-secondary" (click)="clearExerciseForm()">Очистить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" *ngFor="let exercise of exercises">
+    <div class="card-header">
+      <i class="icon-puzzle"></i> Задача №{{exercise.id}} <div class="button" style="float: right" (click)="deleteExercise(exercise.id)"><i class="icon-close remove-file-icon"></i></div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <p>{{exercise.description}}</p>
+      </div>
+      <div class="row" *ngIf="exercise.descriptionImg">
+        <p><img [src]="getFileUrl(exercise.descriptionImg.id)"></p>
+      </div>
+      <div class="row">
+        <p>Правильный ответ: {{exercise.answer}}</p>
+      </div>
+      <div class="row" *ngIf="exercise.downloadFiles.length > 0">
+        <p>
+          Прилагаемые файлы:
+          <span *ngFor="let downloadFile of exercise.downloadFiles">
+          <a [href]="getFileUrl(downloadFile.id)">{{downloadFile.fileName}}</a>
+          &nbsp;
+        </span>
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+</div>

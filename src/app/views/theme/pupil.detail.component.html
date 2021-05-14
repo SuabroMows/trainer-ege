@@ -1,0 +1,89 @@
+<div class="animated fadeIn">
+  <div>
+    <div style="width: 250px;margin: 20px; float: right">
+      <button type="button" class="btn btn-block btn-primary" (click)="isAddHomeWork = !isAddHomeWork">Добавить задание</button>
+    </div>
+  </div>
+  <div style="clear: right"></div>
+
+  <div class="card" [hidden]="!isAddHomeWork">
+    <div class="card-header">
+      <i class="icon-puzzle"></i> Добавление задания
+    </div>
+
+    <div class="card-body">
+      <div [hidden]="!newHomeworkId.length"  style="margin-bottom: 20px;">
+        <label class="col-md-3 col-form-label" for="select1">Выбранные задания</label>
+        <div class="col-md-9" *ngFor="let tt of newHomeworkId; index as i">{{i+1}}.&nbsp;Задание №{{tt}}</div>
+        <div class="btn btn-success active" style="margin-left: 90px; margin-top: 20px;" (click)="createHomeWork()">Создать</div>
+      </div>
+      <label class="col-md-3 col-form-label" for="select1">Выберете задание</label>
+      <div class="col-md-9">
+        <select id="select1" name="select1" class="form-control" (change)="uploadExercises($event.target.value)">
+          <option value="0">Ничего не выбрано</option>
+          <option *ngFor="let task of sortBy(course.courseTopics,'position')" [value]="task.id" >{{task.name}}</option>
+        </select>
+      </div>
+
+      <div style="margin-top: 30px; margin-left: 10px">
+        <div class="card" *ngFor="let exercise of exercises" [hidden]="isHideExercise(exercise.id)">
+          <div class="card-header">
+            <i class="icon-puzzle"></i> Задача №{{exercise.id}} <div class="btn btn-success active" style="float: right" (click)="addExerciseToHomework(exercise.id)">Добавить</div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <p>{{exercise.description}}</p>
+            </div>
+            <div class="row" *ngIf="exercise.descriptionImg">
+              <p><img [src]="getFileUrl(exercise.descriptionImg.id)"></p>
+            </div>
+            <div class="row">
+              <p>Правильный ответ: {{exercise.answer}}</p>
+            </div>
+            <div class="row" *ngIf="exercise.downloadFiles.length > 0">
+              <p>
+                Прилагаемые файлы:
+                <span *ngFor="let downloadFile of exercise.downloadFiles">
+          <a [href]="getFileUrl(downloadFile.id)">{{downloadFile.fileName}}</a>
+          &nbsp;
+        </span>
+              </p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <i class="icon-puzzle"></i> Домашние задания
+    </div>
+    <div class="card-body">
+
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Тип работы</th>
+          <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let homeWork of sortByDesc(homeworkList,'createdDate')">
+          <td [routerLink]="['/theme/homework', homeWork.id]"><div class="btn btn-link" style="cursor: pointer">Домашнее задание от {{formatDate(homeWork.createdDate)}}</div></td>
+          <td>
+           <span class="badge" [ngClass]="{
+            'badge-success': getStatus(homeWork) === 'Завершенно',
+            'badge-warning' : getStatus(homeWork) === 'Начато',
+            'badge-danger' : getStatus(homeWork) === 'Готово к проверке',
+            'badge-primary' : getStatus(homeWork) === 'Новое' }" >
+              {{getStatus(homeWork)}}
+            </span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

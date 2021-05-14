@@ -1,0 +1,59 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <i class="icon-puzzle"></i> Домашнее задание от {{formatDate(homework.createdDate)}}
+    </div>
+
+    <div class="card-body">
+      <div style="margin-top: 30px; margin-left: 10px">
+        <div class="card" *ngFor="let exercise of homework.exercises; let i = index">
+          <div class="card-header">
+            <i class="icon-puzzle"></i> Задача №{{exercise.courseExercise.id}} <span style="color: brown"></span>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <p>{{exercise.courseExercise.description}}</p>
+            </div>
+            <div class="row" *ngIf="exercise.courseExercise.descriptionImg">
+              <p><img [src]="getFileUrl(exercise.courseExercise.descriptionImg.id)"></p>
+            </div>
+
+            <div class="row" *ngIf="exercise.courseExercise.downloadFiles.length > 0">
+              <p>
+                Прилагаемые файлы:
+                <span *ngFor="let downloadFile of exercise.courseExercise.downloadFiles">
+                  <a [href]="getFileUrl(downloadFile.id)">{{downloadFile.fileName}}</a>
+                </span>
+              </p>
+            </div>
+            <div [hidden]="!exercise.finalized">
+              <div class="form-group">
+                <div>Результат: {{exercise.status === 'SUCCESS' ? 'РЕШЕНО' : 'НЕ ВЕРНЫЙ ОТВЕТ'}}</div>
+              </div>
+            </div>
+            <div [hidden]="exercise.finalized">
+              <div class="form-group" [hidden]="exercise.courseExercise.answerType !== 'PROGRAMMING'">
+                  <label class="col-md-3 col-form-label" for="textarea-input">Код программы:</label>
+                  <div class="col-md-9">
+                    <textarea [(ngModel)]="exercise.answerDetail" id="textarea-input" name="textarea-input" rows="9" class="form-control" placeholder="var... begin ... end."></textarea>
+                  </div>
+              </div>
+              <div class="form-group" >
+                <div class="col-md-4">
+                  <label class="col-md-6 col-form-label" for="textarea-input">Ваш ответ:</label>
+                  <div class="input-group">
+                    <input type="text" id="input2-group2" name="input2-group2" class="form-control" placeholder="Введите ответ" [(ngModel)]="exercise.answer">
+                    <span class="input-group-append">
+                    <button *ngIf="exercise.status !== 'ANSWERED'" type="button" class="btn btn-success" (click)="answer(exercise.id, exercise)">Ответить</button>
+                    <button *ngIf="exercise.status === 'ANSWERED'" type="button" class="btn btn-warning" (click)="answer(exercise.id, exercise)">Изменить</button>
+                  </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
