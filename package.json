@@ -20,18 +20,21 @@
   "scripts": {
     "ng": "ng",
     "postinstall": "ngcc --properties es2015 browser module main --first-only",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build --prod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "heroku-postbuild": "ng build --prod"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^11.2.5",
     "@angular/cdk": "^11.2.4",
+    "@angular/cli": "^11.2.4",
     "@angular/common": "^11.2.5",
     "@angular/compiler": "^11.2.5",
+    "@angular/compiler-cli": "^11.2.5",
     "@angular/core": "^11.2.5",
     "@angular/forms": "^11.2.5",
     "@angular/localize": "^11.2.5",
@@ -47,23 +50,24 @@
     "chart.js": "^2.9.4",
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.9.1",
+    "express": "^4.17.1",
     "flag-icon-css": "^3.5.0",
     "font-awesome": "^4.7.0",
     "ng2-charts": "^2.4.2",
     "ngx-bootstrap": "^6.2.0",
     "ngx-file-drop": "^11.1.0",
     "ngx-perfect-scrollbar": "^10.1.0",
+    "path": "^0.12.7",
     "rxjs": "^6.6.6",
     "simple-line-icons": "^2.5.5",
     "ts-helpers": "^1.1.2",
     "tslib": "^2.0.0",
+    "typescript": "~4.1.5",
     "web-animations-js": "^2.3.2",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1102.4",
-    "@angular/cli": "^11.2.4",
-    "@angular/compiler-cli": "^11.2.5",
     "@angular/language-service": "^11.2.5",
     "@types/jasmine": "^3.6.6",
     "@types/jasminewd2": "^2.0.8",
@@ -78,8 +82,7 @@
     "karma-jasmine-html-reporter": "^1.5.0",
     "protractor": "~7.0.0",
     "ts-node": "^8.10.2",
-    "tslint": "~6.1.0",
-    "typescript": "~4.1.5"
+    "tslint": "~6.1.0"
   },
   "engines": {
     "node": ">= 10.13",
